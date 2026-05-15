@@ -60,7 +60,7 @@ export const useAuthStore = create<AuthState>()(
         forwardToElectron(null);
       },
       login: async (email, password) => {
-        const res = await fetch('/api/auth/login', {
+        const res = await fetch('https://api.xxxspeedxxx.com/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password, machineId: get().machineId }),
@@ -75,7 +75,7 @@ export const useAuthStore = create<AuthState>()(
       logout: async () => {
         const refreshToken = get().refreshToken;
         if (refreshToken) {
-          await fetch('/api/auth/logout', {
+          await fetch('https://api.xxxspeedxxx.com/api/auth/logout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ refreshToken }),
