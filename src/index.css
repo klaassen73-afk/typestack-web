@@ -1,0 +1,111 @@
+/* @imports must precede every other CSS statement, including the Tailwind
+   directive — order matters or build emits a "must precede" warning. */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+/* Tailwind v4 class-based dark mode. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================
+   Pinnacle Advertising brand tokens
+   Source: ~/Desktop/tokens.css
+   ============================================================ */
+:root {
+  /* Core */
+  --pnc-white:    #FFFFFF;
+  --pnc-black:    #0A0A0A;
+  --pnc-red:      #EA0029;
+  --pnc-red-dark: #BC0021;
+
+  /* Neutrals — 10-step */
+  --gray-50:  #F8F8F8;
+  --gray-100: #F0F0F0;
+  --gray-200: #E0E0E0;
+  --gray-300: #C8C8C8;
+  --gray-400: #A0A0A0;
+  --gray-500: #787878;
+  --gray-600: #505050;
+  --gray-700: #383838;
+  --gray-800: #242424;
+  --gray-900: #141414;
+
+  /* Default brand accent (red). Users can override in Settings. */
+  --ts-accent:        var(--pnc-red);
+  --ts-accent-strong: var(--pnc-red-dark);
+  --ts-accent-fg:     var(--pnc-white);
+
+  /* Brand radii. */
+  --pnc-radius-sm: 2px;
+  --pnc-radius-md: 4px;
+  --pnc-radius-lg: 8px;
+  --pnc-radius-xl: 16px;
+}
+
+/* Per-accent palette. `brand` is canonical Pinnacle Red; others stay for users
+   who want a different highlight. Selected via data-accent on <html>. */
+html[data-accent="brand"]     { --ts-accent: #EA0029; --ts-accent-strong: #BC0021; --ts-accent-fg: #FFFFFF; }
+html[data-accent="blue"]      { --ts-accent: oklch(64% 0.17 250); --ts-accent-strong: oklch(58% 0.18 250); --ts-accent-fg: white; }
+html[data-accent="purple"]    { --ts-accent: oklch(60% 0.22 295); --ts-accent-strong: oklch(54% 0.24 295); --ts-accent-fg: white; }
+html[data-accent="pink"]      { --ts-accent: oklch(66% 0.21 358); --ts-accent-strong: oklch(60% 0.22 358); --ts-accent-fg: white; }
+html[data-accent="red"]       { --ts-accent: oklch(63% 0.22 25);  --ts-accent-strong: oklch(57% 0.23 25);  --ts-accent-fg: white; }
+html[data-accent="orange"]    { --ts-accent: oklch(72% 0.18 50);  --ts-accent-strong: oklch(65% 0.20 50);  --ts-accent-fg: white; }
+html[data-accent="yellow"]    { --ts-accent: oklch(83% 0.16 88);  --ts-accent-strong: oklch(75% 0.17 88);  --ts-accent-fg: oklch(20% 0.04 88); }
+html[data-accent="green"]     { --ts-accent: oklch(65% 0.16 145); --ts-accent-strong: oklch(58% 0.17 145); --ts-accent-fg: white; }
+html[data-accent="graphite"]  { --ts-accent: oklch(55% 0.02 250); --ts-accent-strong: oklch(45% 0.02 250); --ts-accent-fg: white; }
+
+/* ============================================================
+   Tailwind theme overrides — map zinc to the brand neutrals so existing
+   `bg-zinc-*`/`text-zinc-*` classes pick up the brand palette without
+   touching component code. Also tighten radii to the brand scale.
+   ============================================================ */
+@theme inline {
+  --color-accent:        var(--ts-accent);
+  --color-accent-strong: var(--ts-accent-strong);
+  --color-accent-fg:     var(--ts-accent-fg);
+
+  --color-zinc-50:  var(--gray-50);
+  --color-zinc-100: var(--gray-100);
+  --color-zinc-200: var(--gray-200);
+  --color-zinc-300: var(--gray-300);
+  --color-zinc-400: var(--gray-400);
+  --color-zinc-500: var(--gray-500);
+  --color-zinc-600: var(--gray-600);
+  --color-zinc-700: var(--gray-700);
+  --color-zinc-800: var(--gray-800);
+  --color-zinc-900: var(--gray-900);
+  --color-zinc-950: var(--pnc-black);
+
+  --radius-sm:  var(--pnc-radius-sm);
+  --radius-md:  var(--pnc-radius-md);
+  --radius-lg:  var(--pnc-radius-lg);
+  --radius-xl:  var(--pnc-radius-xl);
+  --radius-2xl: var(--pnc-radius-xl);
+}
+
+html { color-scheme: light; }
+html.dark { color-scheme: dark; }
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: "Poppins", ui-sans-serif, system-ui, -apple-system, Segoe UI,
+               Roboto, Arial, sans-serif;
+  font-feature-settings: "ss01", "ss02";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Brand utilities — the signature 30×2px red rule above sections / cards. */
+.pnc-rule {
+  display: block;
+  width: 30px;
+  height: 2px;
+  background: var(--ts-accent);
+  border: 0;
+  margin: 0 0 16px;
+}
+.pnc-rule--wide { width: 48px; }
+.pnc-rule--full { width: 100%; }
