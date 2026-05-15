@@ -1,18 +1,6 @@
 import { useAuthStore } from '../stores/authStore';
 
-/**
- * Where the TypeStack API actually lives.
- *
- * - In development the Vite proxy forwards `/api` to `http://localhost:3001`.
- * - In a Vercel preview the `vercel.json` rewrites `/api/*` to the configured
- *   API origin (set via the `TYPESTACK_API_BASE` env var on the project).
- * - For unusual hosting (CDN-only, different origin) `VITE_API_BASE` can be
- *   baked in at build time and the client will hit that absolute URL.
- *
- * Default is the relative `/api` so the most common shape (same-origin
- * deployment behind a reverse proxy) "just works".
- */
-const API_BASE = (import.meta.env.VITE_API_BASE ?? '/api').replace(/\/$/, '');
+const API_BASE = 'https://api.xxxspeedxxx.com/api';
 
 export class ApiError extends Error {
   constructor(
@@ -27,7 +15,7 @@ export class ApiError extends Error {
 }
 
 interface ApiOptions extends RequestInit {
-  raw?: boolean; // skip JSON parsing (for binary downloads)
+  raw?: boolean;
 }
 
 async function buildError(res: Response): Promise<ApiError> {
@@ -44,7 +32,7 @@ async function attemptRefresh(): Promise<boolean> {
   const state = useAuthStore.getState();
   if (!state.refreshToken) return false;
   try {
-    const res = await fetch('/api/auth/refresh', {
+    const res = await fetch('https://api.xxxspeedxxx.com/api/auth/refresh', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ refreshToken: state.refreshToken, machineId: state.machineId }),
@@ -89,8 +77,6 @@ export async function api<T>(path: string, init: ApiOptions = {}): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-// <img src=…> can't set Authorization headers, so attach the access token as
-// a query param. The server's authenticate middleware accepts both.
 function buildUrl(base: string, params: Record<string, string | number>): string {
   const qs = new URLSearchParams(
     Object.entries(params).map(([k, v]) => [k, String(v)]),
@@ -102,9 +88,9 @@ function buildUrl(base: string, params: Record<string, string | number>): string
 }
 
 export function fontPreviewUrl(fontId: string, params: Record<string, string | number> = {}): string {
-  return buildUrl(`/api/fonts/${fontId}/preview`, params);
+  return buildUrl(`${API_BASE}/fonts/${fontId}/preview`, params);
 }
 
 export function waterfallUrl(fontId: string, params: Record<string, string | number> = {}): string {
-  return buildUrl(`/api/fonts/waterfall/${fontId}`, params);
+  return buildUrl(`${API_BASE}/fonts/waterfall/${fontId}`, params);
 }
